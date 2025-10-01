@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios Interactivos de CSS para Localización</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos para la vista previa en vivo (se manipulan con JS) */
+        #live-preview blockquote[data-before="true"]::before {
+            content: "Cita destacada: ";
+            font-weight: bold;
+        }
+        
+        /* Estilos para las flechas indicadoras */
+        .pointer-arrow {
+            position: absolute;
+            font-size: 2rem; /* 32px */
+            line-height: 1;
+            color: #e11d48; /* rose-600 */
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none; /* Para que no interfiera con el ratón */
+            z-index: 10;
+        }
+        .pointer-arrow.visible {
+            opacity: 1;
+        }
+        
+        /* Estilo para el resaltado temporal */
+        .highlight-p {
+            background-color: #fef9c3; /* yellow-100 */
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        /* Clases para el enlace de "saltar al contenido" */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        .focus\:not-sr-only:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: 0;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
+
+        /* Estilo para el resaltado del aviso de scroll */
+        .flash-notice {
+            background-color: #fef9c3; /* yellow-200 */
+            font-weight: 600; /* semibold */
+            border-radius: 0.25rem;
+            padding: 0.125rem 0.25rem;
+            margin: -0.125rem -0.25rem;
+            display: inline-block;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans p-4 sm:p-6 md:p-8">
+    <a href="#ficha-personaje" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-white focus:p-3 focus:rounded-lg focus:shadow-md focus:z-50">Saltar al contenido principal</a>
+    
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Ejercicios interactivos de CSS</h1>
+            <p class="text-lg text-slate-600 mt-2">Pon a prueba tus conocimientos sobre CSS y su aplicación en la localización.</p>
+        </header>
+
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-8 rounded-lg" role="alert">
+            <p class="font-bold">Antes de empezar</p>
+            <p>Asegúrate de tener a mano el código HTML base de la ficha del personaje. Los ejercicios harán referencia a sus elementos, clases e identificadores, por lo que te será útil poder inspeccionarlo.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:items-start">
+            <!-- Columna de ejercicios -->
+            <div class="flex flex-col gap-6">
+                
+                <!-- Ejercicio 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-3">1. Estilo incrustado en la etiqueta (inline)</h2>
+                    <p class="mb-4">¿Cuál es la forma correcta de aplicar el color de texto `navy` al párrafo principal usando un estilo incrustado en la etiqueta?</p>
+                    <p class="text-sm text-slate-500 mb-4 italic">Es posible que tengas que desplazarte más abajo para comprobar los cambios en la vista previa, tras seleccionar la opción correcta.</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q1" value="incorrect" class="mr-3"><span>&lt;p color="navy"&gt;...&lt;/p&gt;</span></label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q1" value="correct" class="mr-3"><span>&lt;p style="color: navy;"&gt;...&lt;/p&gt;</span></label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q1" value="incorrect" class="mr-3"><span>&lt;p style="text-color: navy;"&gt;...&lt;/p&gt;</span></label>
+                    </div>
+                    <div id="feedback-1" class="mt-4 text-sm font-medium min-h-[1.25rem]"></div>
+                    <button id="reset-1" class="text-sm mt-4 text-blue-600 hover:underline">Reiniciar este estilo</button>
+                </div>
+
+                <!-- Ejercicio 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-3">2. Selector de ID</h2>
+                    <p class="mb-4">¿Qué regla CSS se usaría para aplicar un borde al contenedor con `id="ficha-personaje"`?</p>
+                    <p class="text-sm text-slate-500 mb-4 italic">Es posible que tengas que desplazarte más abajo para comprobar los cambios en la vista previa, tras seleccionar la opción correcta.</p>
+                     <div class="space-y-2">
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q2" value="correct" class="mr-3"><span>#ficha-personaje { ... }</span></label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q2" value="incorrect" class="mr-3"><span>.ficha-personaje { ... }</span></label>
+                         <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q2" value="incorrect" class="mr-3"><span>main { id: ficha-personaje; ... }</span></label>
+                    </div>
+                    <div id="feedback-2" class="mt-4 text-sm font-medium min-h-[1.25rem]"></div>
+                    <button id="reset-2" class="text-sm mt-4 text-blue-600 hover:underline">Reiniciar este estilo</button>
+                </div>
+
+                <!-- Ejercicio 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-3">3. Pseudoelementos</h2>
+                    <p class="mb-4">Para añadir el texto "Cita destacada: " (que necesitaría traducción) antes de la cita, ¿qué pseudoelemento se usa?</p>
+                    <p id="scroll-notice-3" class="text-sm text-slate-500 mb-4 italic">Es posible que tengas que desplazarte más abajo para comprobar los cambios en la vista previa, tras seleccionar la opción correcta.</p>
+                     <div class="space-y-2">
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q3" value="incorrect" class="mr-3"><span>blockquote::after { content: "..."; }</span></label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q3" value="correct" class="mr-3"><span>blockquote::before { content: "..."; }</span></label>
+                         <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q3" value="incorrect" class="mr-3"><span>blockquote::before { text: "..."; }</span></label>
+                    </div>
+                    <div id="feedback-3" class="mt-4 text-sm font-medium min-h-[1.25rem]"></div>
+                    <button id="reset-3" class="text-sm mt-4 text-blue-600 hover:underline">Reiniciar este estilo</button>
+                </div>
+                
+                <!-- Ejercicio 4 -->
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-3">4. Estilos por idioma</h2>
+                    <p class="mb-4">¿Qué selector CSS aplica un estilo (p. ej., <strong>`font-style: italic;`</strong>) solo a las citas en inglés (`lang="en"`)?</p>
+                    <p id="scroll-notice-4" class="text-sm text-slate-500 mb-4 italic">Es posible que tengas que desplazarte más abajo para comprobar los cambios en la vista previa, tras seleccionar la opción correcta.</p>
+                     <div class="space-y-2">
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q4" value="correct-alt" class="mr-3"><span>blockquote[lang="en"] { ... }</span></label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q4" value="correct" class="mr-3"><span>blockquote:lang(en) { ... }</span></label>
+                         <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q4" value="incorrect" class="mr-3"><span>blockquote.lang-en { ... }</span></label>
+                    </div>
+                    <div id="feedback-4" class="mt-4 text-sm font-medium min-h-[2.5rem]"></div>
+                    <button id="reset-4" class="text-sm mt-4 text-blue-600 hover:underline">Reiniciar este estilo</button>
+                </div>
+
+                <!-- Ejercicio 5 -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-3">5. Recursos culturales</h2>
+                    <p class="mb-4">Si una imagen de fondo contiene texto que debe ser localizado, ¿qué propiedad CSS se usaría para definirla?</p>
+                    <p class="text-sm text-slate-500 mb-4 italic">Es posible que tengas que desplazarte más abajo para comprobar los cambios en la vista previa, tras seleccionar la opción correcta.</p>
+                     <div class="space-y-2">
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q5" value="incorrect" class="mr-3"><span>background-src: url(...);</span></label>
+                         <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q5" value="correct" class="mr-3"><span>background-image: url(...);</span></label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"><input type="radio" name="q5" value="incorrect" class="mr-3"><span>image-source: url(...);</span></label>
+                    </div>
+                    <div id="feedback-5" class="mt-4 text-sm font-medium min-h-[1.25rem]"></div>
+                    <button id="reset-5" class="text-sm mt-4 text-blue-600 hover:underline">Reiniciar este estilo</button>
+                </div>
+            </div>
+
+            <!-- Columna de vista previa -->
+            <div class="lg:sticky top-8">
+                <h2 class="text-2xl font-bold text-center mb-4">Vista previa en vivo</h2>
+                <div id="live-preview" class="bg-white rounded-lg shadow-xl transition-all duration-500 bg-cover bg-center p-4">
+                     <main id="ficha-personaje" class="relative transition-all duration-500 bg-white/90 p-6 rounded-lg shadow-lg">
+                        <!-- Flechas indicadoras -->
+                        <span id="arrow-3" class="pointer-arrow" style="bottom: 1.5rem; left: -0.5rem;">➔</span>
+                        <span id="arrow-4" class="pointer-arrow" style="bottom: 1.5rem; left: -0.5rem;">➔</span>
+                        <span id="arrow-5" class="pointer-arrow" style="top: 4rem; right: -1.5rem; transform: scaleX(-1);">➔</span>
+
+                        <h1 class="text-3xl font-bold text-gray-800">Otis Milburn</h1>
+                        <img src="Otis_Milburn_Season_1_Portrait.jpg" alt="Retrato de Otis Milburn">
+                        
+                        <h2 class="text-2xl font-semibold text-gray-700 mt-4 border-b pb-1">Sobre el personaje</h2>
+                        <p id="paragraph-q1" class="text-gray-600 mt-2 transition-colors duration-300">Otis Milburn es el protagonista de la serie "Sex Education". Es un adolescente algo torpe socialmente que, paradójicamente, se convierte en terapeuta sexual para sus compañeros.</p>
+                        
+                        <h2 class="text-2xl font-semibold text-gray-700 mt-4 border-b pb-1">Rasgos principales</h2>
+                        <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1">
+                            <li>Empático y buen oyente</li>
+                            <li class="dato-curioso">Analítico y a veces demasiado racional</li>
+                            <li>Leal con sus amigos</li>
+                        </ul>
+
+                        <h2 class="text-2xl font-semibold text-gray-700 mt-4 border-b pb-1">Cita</h2>
+                        <blockquote lang="en" class="mt-2 p-4 border-l-4 border-gray-200 transition-colors duration-500">
+                            "Every day is a fresh start."
+                        </blockquote>
+                    </main>
+                </div>
+                 <button id="reset-all-btn" class="w-full mt-4 bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors">
+                    Reiniciar todos los estilos
+                </button>
+            </div>
+        </div>
+
+        <!-- Preguntas de reflexión -->
+        <div class="mt-12 bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4">Preguntas para la reflexión</h2>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-semibold">1. Mantenimiento y localización</h3>
+                    <p class="text-slate-600">¿Por qué la aplicación de estilos incrustados en la etiqueta (ejercicio 1) sería una pesadilla para un localizador que necesita revisar y adaptar la presentación de una web para otro mercado?</p>
+                </div>
+                <div>
+                    <h3 class="font-semibold">2. Identificación de texto</h3>
+                    <p class="text-slate-600">¿Dónde se encuentra el texto "Cita destacada: " (ejercicio 3) que habría que enviar a traducir? ¿Qué desafíos presenta para las herramientas de extracción automática de texto?</p>
+                </div>
+                 <div>
+                    <h3 class="font-semibold">3. Internacionalización: dirección de la escritura</h3>
+                    <p class="text-slate-600">Algunos idiomas, como el mongol tradicional, se escriben verticalmente. El artículo de referencia explica cómo CSS puede manejar esto. ¿Qué propiedad de CSS investigarías para cambiar la dirección del flujo de texto de horizontal a vertical y por qué es fundamental para una correcta internacionalización en estos casos?</p>
+                    <div class="mt-2 text-sm text-slate-500">
+                         <p class="mt-1"><b>Referencia:</b> <a href="https://chenhuijing.com/blog/css-for-i18n/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">CSS for i18n por Chen Hui Jing (abrir en ventana nueva)</a></p>
+                    </div>
+                </div>
+                 <div>
+                    <h3 class="font-semibold">4. Accesibilidad y localización</h3>
+                    <p class="text-slate-600">Al principio de esta página de ejercicios hay un enlace para "Saltar al contenido principal" que solo es visible cuando se navega con el teclado (puedes probarlo pulsando el tabulador). ¿Qué propósito cumple este tipo de enlace y por qué es importante tanto para la accesibilidad como para la localización de un sitio web?</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="text-center mt-12 text-sm text-slate-500">
+            <p>Creado por Jesús Torres del Rey</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- VARIABLES GLOBALES ---
+            let flashInterval = null;
+
+            const preview = {
+                container: document.getElementById('live-preview'),
+                main: document.querySelector('#live-preview main'),
+                p: document.getElementById('paragraph-q1'),
+                blockquote: document.querySelector('#live-preview blockquote')
+            };
+            
+            const arrows = {
+                3: document.getElementById('arrow-3'),
+                4: document.getElementById('arrow-4'),
+                5: document.getElementById('arrow-5'),
+            };
+
+            // --- FUNCIONES DE FEEDBACK VISUAL ---
+            const showArrow = (qNum) => {
+                Object.values(arrows).forEach(arrow => arrow && arrow.classList.remove('visible'));
+                if (arrows[qNum]) {
+                    arrows[qNum].classList.add('visible');
+                }
+            };
+
+            const hideArrows = () => Object.values(arrows).forEach(arrow => arrow && arrow.classList.remove('visible'));
+
+            const highlightParagraph = () => {
+                preview.p.classList.add('highlight-p');
+                setTimeout(() => {
+                    preview.p.classList.remove('highlight-p');
+                }, 1000);
+            };
+
+            const flashBorder = () => {
+                if (flashInterval) clearInterval(flashInterval);
+                let flashes = 0;
+                flashInterval = setInterval(() => {
+                    preview.main.style.border = flashes % 2 === 0 ? '3px solid #ef4444' : 'none';
+                    flashes++;
+                    if (flashes > 5) {
+                        clearInterval(flashInterval);
+                        preview.main.style.border = '3px solid #0ea5e9';
+                    }
+                }, 150);
+            };
+
+            const flashNotice = (qNum) => {
+                const noticeEl = document.getElementById(`scroll-notice-${qNum}`);
+                if (!noticeEl) return;
+                
+                noticeEl.classList.add('flash-notice');
+                setTimeout(() => {
+                    noticeEl.classList.remove('flash-notice');
+                }, 1500);
+            };
+
+            // --- FUNCIONES DE RESET ---
+            const resetQuestionState = (qNum) => {
+                const feedbackEl = document.getElementById(`feedback-${qNum}`);
+                if (feedbackEl) feedbackEl.innerHTML = '';
+                document.querySelectorAll(`input[name="q${qNum}"]`).forEach(radio => radio.checked = false);
+            };
+
+            const resetFunctions = {
+                1: () => { preview.p.style.color = ''; resetQuestionState(1); },
+                2: () => { if (flashInterval) clearInterval(flashInterval); preview.main.style.border = ''; resetQuestionState(2); },
+                3: () => { preview.blockquote.dataset.before = 'false'; resetQuestionState(3); },
+                4: () => {
+                    preview.blockquote.style.fontStyle = '';
+                    preview.blockquote.style.backgroundColor = '';
+                    resetQuestionState(4);
+                },
+                5: () => {
+                    preview.container.style.backgroundImage = '';
+                    preview.main.style.backgroundColor = '';
+                    resetQuestionState(5);
+                }
+            };
+
+            const resetAllStyles = () => {
+                Object.values(resetFunctions).forEach(func => func());
+                hideArrows();
+            };
+            
+            document.getElementById('reset-all-btn').addEventListener('click', resetAllStyles);
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`reset-${i}`).addEventListener('click', () => {
+                    resetFunctions[i]();
+                    hideArrows();
+                });
+            }
+
+            // --- LÓGICA DE EJERCICIOS ---
+            const showFeedback = (element, message, isCorrect) => {
+                element.innerHTML = message;
+                element.className = isCorrect ? 'text-green-600' : 'text-red-600';
+                element.className += ' mt-4 text-sm font-medium';
+            };
+
+            const feedbacks = {
+                fb1: document.getElementById('feedback-1'),
+                fb2: document.getElementById('feedback-2'),
+                fb3: document.getElementById('feedback-3'),
+                fb4: document.getElementById('feedback-4'),
+                fb5: document.getElementById('feedback-5'),
+            };
+
+            document.querySelectorAll('input[name="q1"]').forEach(r=>r.addEventListener('change',e=>{ hideArrows(); if(e.target.value==='correct'){showFeedback(feedbacks.fb1,'¡Correcto! El atributo `style` es la forma de aplicar estilos incrustados en la etiqueta.',true);preview.p.style.color='navy'; highlightParagraph();}else{showFeedback(feedbacks.fb1,'Incorrecto. Revisa la sintaxis.',false);preview.p.style.color=''}}));
+            document.querySelectorAll('input[name="q2"]').forEach(r=>r.addEventListener('change',e=>{ hideArrows(); if(e.target.value==='correct'){showFeedback(feedbacks.fb2,'¡Correcto! El símbolo # se usa para seleccionar elementos por su ID.',true); flashBorder();}else{showFeedback(feedbacks.fb2,'Incorrecto. Recuerda la diferencia entre ID, clase y etiqueta.',false); if (flashInterval) clearInterval(flashInterval); preview.main.style.border=''}}));
+            
+            document.querySelectorAll('input[name="q3"]').forEach(r=>r.addEventListener('change',e=>{ 
+                showArrow(3); 
+                if(e.target.value==='correct'){
+                    showFeedback(feedbacks.fb3,'¡Correcto! `::before` inserta contenido antes del elemento.',true);
+                    preview.blockquote.dataset.before='true';
+                    flashNotice(3);
+                } else {
+                    showFeedback(feedbacks.fb3,'Incorrecto. `::after` lo insertaría después.',false);
+                    preview.blockquote.dataset.before='false';
+                }
+            }));
+            
+            document.querySelectorAll('input[name="q4"]').forEach(r => r.addEventListener('change', e => {
+                showArrow(4);
+                const applyStyle = () => {
+                    preview.blockquote.style.fontStyle = 'italic';
+                    preview.blockquote.style.backgroundColor = '#f1f5f9';
+                };
+                
+                if (e.target.value === 'correct') {
+                    showFeedback(feedbacks.fb4, '¡Correcto! Es la pseudoclase estándar. <b>Hay otra opción válida. Reinicia este estilo y búscala.</b>', true);
+                    applyStyle();
+                    flashNotice(4);
+                } else if (e.target.value === 'correct-alt') {
+                    showFeedback(feedbacks.fb4, '¡Correcto! Es un selector de atributo válido. <b>Hay otra opción válida. Reinicia este estilo y búscala.</b>', true);
+                    applyStyle();
+                    flashNotice(4);
+                } else {
+                    showFeedback(feedbacks.fb4, 'Incorrecto. Esa no es la sintaxis estándar.', false);
+                    resetFunctions[4]();
+                    preview.blockquote.style.fontStyle = '';
+                    preview.blockquote.style.backgroundColor = '';
+                }
+            }));
+
+            document.querySelectorAll('input[name="q5"]').forEach(r => r.addEventListener('change', e => {
+                showArrow(5);
+                if (e.target.value === 'correct') {
+                    showFeedback(feedbacks.fb5, '¡Correcto! Esta propiedad define la imagen de fondo de un elemento.', true);
+                    preview.container.style.backgroundImage = 'url(https://picsum.photos/id/1015/800/600)';
+                    preview.main.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                } else {
+                    showFeedback(feedbacks.fb5, 'Incorrecto. `background-image` es la propiedad correcta.', false);
+                    resetFunctions[5]();
+                }
+            }));
+
+            resetAllStyles();
+        });
+    </script>
+</body>
+</html>
+
